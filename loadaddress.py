@@ -125,8 +125,8 @@ if a>=1 and a<=i:
             ani = pers // 10
             if pers > 100:
                 pers = 100
-            if ani > 10:
-                ani = 10
+            if ani >= 10:
+                ani = 9
             if qw*100 > total_address:
                 kolad = total_address
             else:
