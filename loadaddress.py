@@ -1,7 +1,9 @@
 from urllib.request import urlopen
 from urllib import request, error
+from random import randint
 from urllib.parse import quote, urlsplit, urlunsplit
 import json, urllib, time, sys, csv
+import uuid
 
 def get_id(d, k):
     if k[0] in d.keys():
@@ -24,7 +26,6 @@ def get_id(d, k):
 qw2 = 0
 get_cookie = urlopen('https://dom.gosuslugi.ru/ppa/api/rest/services/ppa/current/user')
 cookie = get_cookie.headers.get('Set-Cookie')
-print(cookie)
 animation = ["[■□□□□□□□□□]","[■■□□□□□□□□]", "[■■■□□□□□□□]", "[■■■■□□□□□□]", "[■■■■■□□□□□]", "[■■■■■■□□□□]", "[■■■■■■■□□□]", "[■■■■■■■■□□]", "[■■■■■■■■■□]", "[■■■■■■■■■■]"]
 headers = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.75 Safari/537.36'}
 region_url = "https://dom.gosuslugi.ru/nsi/api/rest/services/nsi/fias/v4/regions"
@@ -57,8 +58,8 @@ if a>=1 and a<=i:
             "Content-Type": "application/json;charset=utf-8",
             "Content-Length": clen,
             "Accept": "application/json; charset=utf-8",
-            "Session-GUID": "bcfd7e47-5cce-42bb-ab77-6f99be097fb5",
-            "Request-GUID": "fbaa5893-e292-483f-a3b2-75f03ccdabd6",
+            "Session-GUID": str(uuid.uuid4()),
+            "Request-GUID": str(uuid.uuid4()),
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36",
             "Accept-Encoding": "gzip, deflate, br",
             "Connection": "keep-alive",
@@ -85,15 +86,15 @@ if a>=1 and a<=i:
                 "Content-Type": "application/json;charset=utf-8",
                 "Content-Length": clen,
                 "Accept": "application/json; charset=utf-8",
-                "Session-GUID": "bcfd7e47-5cce-42bb-ab77-6f99be097fb5",
-                "Request-GUID": "fbaa5893-e292-483f-a3b2-75f03ccdabd6",
+                "Session-GUID": str(uuid.uuid4()),
+                "Request-GUID": str(uuid.uuid4()),
                 "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36",
                 "Accept-Encoding": "gzip, deflate, br",
                 "Connection": "keep-alive",
                 "Cookie": cookie
             }
             req = request.Request(address_url, Qdata, headers2)
-            delayaddr = 5
+            delayaddr = 10
             max_retries_addr = 10
             for _ in range(max_retries_addr):
                 try:
@@ -102,7 +103,7 @@ if a>=1 and a<=i:
                     break
                 except Exception:
                     time.sleep(delayaddr)
-                    delayaddr *= 2
+                    delayaddr += delayaddr
             jsonina = data_json_address["items"]
             data_file = open('fullhousebase.csv', 'a', newline='')
             csv_writer = csv.writer(data_file)
@@ -126,6 +127,7 @@ if a>=1 and a<=i:
             sys.stdout.write("\r Обработано " + str(qw*100) + " адресов из " + str(total_address) + "\n\r" + str(pers) + "% " + animation[ani  % len(animation)])
             sys.stdout.flush()
             qw +=1
+            time.sleep(randint(5,15))
         print('База всех домов с адресами в', data_json_cities[b-1]["shortName"],data_json_cities[b-1]["offName"], ' сохранена в файле fullhousebase.csv в папке проекта')
     else:
         print('Населенного пункта с таким номером нет ')
