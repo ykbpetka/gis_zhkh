@@ -22,7 +22,7 @@ def get_id(d, k):
             return ' '
     else:
         return ' '
-
+fileuid = str(uuid.uuid4())
 qw2 = 0
 get_cookie = urlopen('https://dom.gosuslugi.ru/ppa/api/rest/services/ppa/current/user')
 cookie = get_cookie.headers.get('Set-Cookie')
@@ -105,7 +105,7 @@ if a>=1 and a<=i:
                     time.sleep(delayaddr)
                     delayaddr += delayaddr
             jsonina = data_json_address["items"]
-            data_file = open('fullhousebase.csv', 'a', newline='')
+            data_file = open(fileuid+'fullhousebase.csv', 'a', newline='')
             csv_writer = csv.writer(data_file)
             if(qw == 1):
                 count = 0
@@ -125,7 +125,7 @@ if a>=1 and a<=i:
             ani = pers // 10
             if pers > 100:
                 pers = 100
-            if ani >= 10:
+            if ani > 10:
                 ani = 9
             if qw*100 > total_address:
                 kolad = total_address
@@ -135,7 +135,8 @@ if a>=1 and a<=i:
             sys.stdout.flush()
             qw +=1
             time.sleep(randint(5,15))
-        print('\nБаза всех домов с адресами в', data_json_cities[b-1]["shortName"],data_json_cities[b-1]["offName"], ' сохранена в файле fullhousebase.csv в папке проекта')
+        f1 = fileuid + 'fullhousebase.csv'
+        print('\nБаза всех домов с адресами в', data_json_cities[b-1]["shortName"],data_json_cities[b-1]["offName"], ' сохранена в файле ', f1, ' в папке проекта')
     else:
         print('Населенного пункта с таким номером нет ')
 else:
