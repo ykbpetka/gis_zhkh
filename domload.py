@@ -22,8 +22,7 @@ def get_id(d, k):
             return ' '
     else:
         return ' '
-
-
+fileuid = str(uuid.uuid4())
 qw2 = 0
 get_cookie = urlopen('https://dom.gosuslugi.ru/ppa/api/rest/services/ppa/current/user')
 cookie = get_cookie.headers.get('Set-Cookie')
@@ -135,7 +134,7 @@ if a>=1 and a<=i:
                         time.sleep(delaypass)
                         delaypass += delaypass
                 passjsonina = data_json_pass["parameters"]
-                data_file_pass = open('passporthousebase.csv', 'a', newline='')
+                data_file_pass = open(fileuid+'passporthousebase.csv', 'a', newline='')
                 csv_writer_pass = csv.writer(data_file_pass)
                 if(qw2 == 0):
                     count = 0
@@ -160,7 +159,7 @@ if a>=1 and a<=i:
                 time.sleep(randint(5,15))
 
             jsonina = data_json_address["items"]
-            data_file = open('fullhousebase.csv', 'a', newline='')
+            data_file = open(fileuid+'fullhousebase.csv', 'a', newline='')
             csv_writer = csv.writer(data_file)
             if(qw == 1):
                 count = 0
@@ -179,11 +178,21 @@ if a>=1 and a<=i:
             
             pers = int((qw*100 / total_address) * 100)
             ani = pers // 10
-            sys.stdout.write("\r Обработано " + str(qw*100) + " адресов из " + str(total_address) + "\n\r" + str(pers) + "% " + animation[ani  % len(animation)])
+            if pers > 100:
+                pers = 100
+            if ani >= 10:
+                ani = 9
+            if qw*100 > total_address:
+                kolad = total_address
+            else:
+                kolad = qw*100
+            sys.stdout.write("\r Обработано " + str(kolad) + " адресов из " + str(total_address) + "\n\r" + str(pers) + "% " + animation[ani  % len(animation)])
             sys.stdout.flush()
             qw +=1
             time.sleep(randint(5,15))
-        print('База всех домов с адресами в', data_json_cities[b-1]["shortName"],data_json_cities[b-1]["offName"], ' сохранена в файле fullhousebase.csv в папке проекта, а все паспорта домов сохранены в файле passporthousebase.csv')
+        f1 = fileuid + 'fullhousebase.csv'
+        f2 = fileuid + 'passporthousebase.csv'
+        print('База всех домов с адресами в', data_json_cities[b-1]["shortName"],data_json_cities[b-1]["offName"], ' сохранена в файле ', f1, ' в папке проекта, а все паспорта домов сохранены в файле ', f2)
     else:
         print('Населенного пункта с таким номером нет ')
 else:
