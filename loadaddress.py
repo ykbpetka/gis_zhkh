@@ -93,7 +93,7 @@ if a>=1 and a<=i:
                 "Cookie": cookie
             }
             req = request.Request(address_url, Qdata, headers2)
-            delayaddr = 10
+            delayaddr = 5
             max_retries_addr = 10
             for _ in range(max_retries_addr):
                 try:
