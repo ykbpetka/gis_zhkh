@@ -121,14 +121,21 @@ if a>=1 and a<=i:
                 csv_writer.writerow(strokaddass)
                 preq1 += 1
             data_file.close()
-            
             pers = int((qw*100 / total_address) * 100)
             ani = pers // 10
-            sys.stdout.write("\r Обработано " + str(qw*100) + " адресов из " + str(total_address) + "\n\r" + str(pers) + "% " + animation[ani  % len(animation)])
+            if pers > 100:
+                pers = 100
+            if ani > 10:
+                ani = 10
+            if qw*100 > total_address:
+                kolad = total_address
+            else:
+                kolad = qw*100
+            sys.stdout.write("\r Обработано " + str(kolad) + " адресов из " + str(total_address) + "\n\r" + str(pers) + "% " + animation[ani  % len(animation)])
             sys.stdout.flush()
             qw +=1
             time.sleep(randint(5,15))
-        print('База всех домов с адресами в', data_json_cities[b-1]["shortName"],data_json_cities[b-1]["offName"], ' сохранена в файле fullhousebase.csv в папке проекта')
+        print('\nБаза всех домов с адресами в', data_json_cities[b-1]["shortName"],data_json_cities[b-1]["offName"], ' сохранена в файле fullhousebase.csv в папке проекта')
     else:
         print('Населенного пункта с таким номером нет ')
 else:
